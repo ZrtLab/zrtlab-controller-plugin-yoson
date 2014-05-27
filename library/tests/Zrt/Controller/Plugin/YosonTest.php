@@ -34,10 +34,27 @@ class YosonTest extends PHPUnit_Framework_TestCase
     public function testOutputJsonWithoutApplicationConfig()
     {
         $request = m::mock('Zend_Controller_Request_Abstract');
-        $request->shouldReceive('getModuleName')->times(3)->andReturn('Module');
-        $request->shouldReceive('getControllerName')->times(3)->andReturn('Controller');
-        $request->shouldReceive('getActionName')->times(3)->andReturn('Action');
+        $request->shouldReceive('getModuleName')->andReturn('module');
+        $request->shouldReceive('getControllerName')->andReturn('controller');
+        $request->shouldReceive('getActionName')->andReturn('action');
+
+        $valuesAssign = array(
+            'modulo' =>'module',
+            'controller' => 'controller',
+            'action' => 'action'
+        );
+
+        $valuesToValidate = array_merge(
+            $this->plugin->getValuesYoson(),
+            $valuesAssign
+        );
+
         $this->plugin->postDispatch($request);
+
+        $this->assertEquals(
+            $this->plugin->getValuesYoson(),
+            $valuesToValidate
+        );
     }
 
 }
