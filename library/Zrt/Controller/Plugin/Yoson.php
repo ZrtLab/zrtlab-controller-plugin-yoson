@@ -21,11 +21,15 @@ class Zrt_Controller_Plugin_Yoson
     public function postDispatch(Zend_Controller_Request_Abstract $request)
     {
         $this->setupParams($request);
-        //$this->view = Zend_Layout::getMvcInstance()->getView();
 
-        //$this->view->HeadScript()->prependScript('var yOSON= ' .
-        //json_encode($this->value,JSON_FORCE_OBJECT)
-        //);
+        if (PHP_SAPI != "cli") {
+            $this->view = Zend_Layout::getMvcInstance()->getView();
+
+            $this->view->HeadScript()->prependScript('var yOSON= ' .
+                json_encode($this->yoson,JSON_FORCE_OBJECT)
+            );
+        }
+
         parent::postDispatch($request);
     }
 
