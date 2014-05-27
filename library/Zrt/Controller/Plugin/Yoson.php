@@ -4,7 +4,31 @@ class Zrt_Controller_Plugin_Yoson
     extends Zend_Controller_Plugin_Abstract
 {
 
+    protected $view;
+    protected $value;
+
     public function postDispatch(Zend_Controller_Request_Abstract $request)
+    {
+        $this->setupParams();
+        $this->view = Zend_Layout::getMvcInstance()->getView();
+
+        $this->view->HeadScript()->prependScript('var yOSON= ' .
+            json_encode($this->value,JSON_FORCE_OBJECT)
+        );
+        parent::postDispatch($request);
+    }
+
+    public function setView($view)
+    {
+        $this->view = $view;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    protected function setupParams()
     {
         $yOSON = array();
         $yOSON['modulo'] =  $request->getModuleName();
@@ -22,11 +46,7 @@ class Zrt_Controller_Plugin_Yoson
                         'requires' => array(),
                         );
 
-
-        $view->HeadScript()->prependScript('var yOSON= ' .
-            json_encode($yOSON,JSON_FORCE_OBJECT)
-        );
-        parent::postDispatch($request);
+        $this->value = $yOSON;
     }
 
 }
