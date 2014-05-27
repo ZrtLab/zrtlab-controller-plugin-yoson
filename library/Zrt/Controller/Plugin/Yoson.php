@@ -6,7 +6,6 @@ class Zrt_Controller_Plugin_Yoson
 
     public function postDispatch(Zend_Controller_Request_Abstract $request)
     {
-        $view = Zend_Layout::getMvcInstance()->getView();
         $yOSON = array();
         $yOSON['modulo'] =  $request->getModuleName();
         $yOSON['controller'] =  $request->getControllerName();
