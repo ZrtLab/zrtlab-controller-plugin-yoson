@@ -5,16 +5,27 @@ class Zrt_Controller_Plugin_Yoson
 {
 
     protected $view;
-    protected $value;
+    protected $yoson = array(
+        'modulo' => '',
+        'controller' => '',
+        'action' => '',
+        'min' =>  'min/',
+        'AppCore' => array(),
+        'AppSandbox' => array(),
+        'AppSchema' => array(
+            'module' => array(),
+            'requires' => array(),
+        )
+    );
 
     public function postDispatch(Zend_Controller_Request_Abstract $request)
     {
-        $this->setupParams();
-        $this->view = Zend_Layout::getMvcInstance()->getView();
+        $this->setupParams($request);
+        //$this->view = Zend_Layout::getMvcInstance()->getView();
 
-        $this->view->HeadScript()->prependScript('var yOSON= ' .
-            json_encode($this->value,JSON_FORCE_OBJECT)
-        );
+        //$this->view->HeadScript()->prependScript('var yOSON= ' .
+        //json_encode($this->value,JSON_FORCE_OBJECT)
+        //);
         parent::postDispatch($request);
     }
 
@@ -23,30 +34,20 @@ class Zrt_Controller_Plugin_Yoson
         $this->view = $view;
     }
 
-    public function getValue()
+    public function getValuesYoson()
     {
-        return $this->value;
+        return $this->yoson;
     }
 
-    protected function setupParams()
+    protected function setupParams($request)
     {
-        $yOSON = array();
-        $yOSON['modulo'] =  $request->getModuleName();
-        $yOSON['controller'] =  $request->getControllerName();
-        $yOSON['action'] =  $request->getActionName();
+        $this->yoson['modulo'] =  $request->getModuleName();
+        $this->yoson['controller'] =  $request->getControllerName();
+        $this->yoson['action'] =  $request->getActionName();
         //$yOSON['baseHost'] =  $this->config->app->siteUrl;
         //$yOSON['statHost'] =  $this->config->app->mediaUrl.'/';
         //$yOSON['eHost'] =  $this->config->app->elementsUrl;
         //$yOSON['statVers'] =  $this->lastCommit->getLastCommit();
-        $yOSON['min'] =  'min/';
-        $yOSON['AppCore'] = array();
-        $yOSON['AppSandbox'] = array();
-        $yOSON['AppSchema'] = array(
-                        'module' => array(),
-                        'requires' => array(),
-                        );
-
-        $this->value = $yOSON;
     }
 
 }
