@@ -33,7 +33,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Zrt_Application": "library/"
+            "Zrt_Controller_Plugin_Yoson": "library/"
         }
     },
     "autoload-dev": {
